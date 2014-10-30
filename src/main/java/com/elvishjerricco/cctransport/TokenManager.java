@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class TokenManager extends WorldSavedData {
-    public static final String IDENTIFIER = "ccereal_tokens";
+    public static final String IDENTIFIER = "cctransport_tokens";
 
     private final Random rand;
     private HashMap<String, ItemStack> usedTokens = new HashMap<String, ItemStack>();
