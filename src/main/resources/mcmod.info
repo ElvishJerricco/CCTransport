@@ -1,0 +1,16 @@
+[
+{
+  "modid": "CCTransport",
+  "name": "CCTransport",
+  "description": "Serialize items for CC.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["ElvishJerricco"],
+  "credits": "Thanks to Dan200 for ComputerCraft!",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
