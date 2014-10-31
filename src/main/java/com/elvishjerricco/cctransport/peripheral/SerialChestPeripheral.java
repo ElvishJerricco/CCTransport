@@ -2,30 +2,37 @@ package com.elvishjerricco.cctransport.peripheral;
 
 import com.elvishjerricco.cctransport.TokenManager;
 import com.elvishjerricco.cctransport.peripheral.converter.ConversionFactory;
-import com.elvishjerricco.cctransport.tiles.SerialChestTileEntity;
 import dan200.computercraft.api.lua.ILuaContext;
 import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.peripheral.IComputerAccess;
 import dan200.computercraft.api.peripheral.IPeripheral;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class SerialChestPeripheral implements IPeripheral {
-    private final SerialChestTileEntity tile;
+    private final IInventory inventory;
+    private final TokenManager tokenManager;
 
-    TokenManager tokenManager() {
-        return TokenManager.tokenManager(tile.getWorldObj());
+    public SerialChestPeripheral(IInventory inventory, World world) {
+        this(inventory, TokenManager.tokenManager(world));
     }
 
-    public SerialChestPeripheral(SerialChestTileEntity tile) {
-        this.tile = tile;
+    public TokenManager tokenManager() {
+        return tokenManager;
+    }
+
+    public SerialChestPeripheral(IInventory inventory, TokenManager tokenManager) {
+        this.inventory = inventory;
+        this.tokenManager = tokenManager;
     }
 
     // Returns Token, {damage=,count=,name=}
     public Object[] serialize(IComputerAccess computer, ILuaContext context, Object[] arguments) {
-        ItemStack itemstack = tile.decrStackSize(0, 1);
+        ItemStack itemstack = inventory.decrStackSize(getSlot(), 1);
         if (itemstack == null) {
             return new Object[]{false, "No item to serialize"};
         }
@@ -43,20 +50,20 @@ public class SerialChestPeripheral implements IPeripheral {
 
         String token = (String) arguments[0];
 
-        ItemStack stack = tile.getStackInSlot(0);
+        ItemStack stack = inventory.getStackInSlot(getSlot());
         ItemStack serializedStack = tokenManager().getItemStack(token);
         if (serializedStack == null) {
             return new Object[] {false, "Invalid token"};
         } else if (stack == null) {
-            tile.setInventorySlotContents(0, serializedStack);
+            inventory.setInventorySlotContents(getSlot(), serializedStack);
             tokenManager().consumeToken(token);
             return new Object[] {true};
         } else if (stack.isItemEqual(serializedStack)
                 && ItemStack.areItemStackTagsEqual(stack, serializedStack)
                 && stack.getMaxStackSize() >= stack.stackSize + serializedStack.stackSize
-                && tile.getInventoryStackLimit() >= stack.stackSize + serializedStack.stackSize) {
+                && inventory.getInventoryStackLimit() >= stack.stackSize + serializedStack.stackSize) {
             stack.stackSize += serializedStack.stackSize;
-            tile.setInventorySlotContents(0, stack);
+            inventory.setInventorySlotContents(getSlot(), stack);
             tokenManager().consumeToken(token);
             return new Object[] {true};
         } else {
@@ -66,7 +73,7 @@ public class SerialChestPeripheral implements IPeripheral {
 
     public void queueInventoryChangeEvent() {
         for (IComputerAccess computer : attachedComputers) {
-            Map map = (Map) ConversionFactory.convert(tile.getStackInSlot(0));
+            Map map = (Map) ConversionFactory.convert(inventory.getStackInSlot(getSlot()));
             computer.queueEvent("serial_chest_update", new Object[]{computer.getAttachmentName(), map});
         }
     }
@@ -109,5 +116,9 @@ public class SerialChestPeripheral implements IPeripheral {
     @Override
     public boolean equals(IPeripheral other) {
         return other == this;
+    }
+
+    public int getSlot() {
+        return 0;
     }
 }

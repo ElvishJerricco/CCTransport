@@ -13,7 +13,7 @@ public class PeripheralProvider implements IPeripheralProvider {
         if (te instanceof SerialChestTileEntity) {
             SerialChestTileEntity tile = (SerialChestTileEntity) te;
             if (tile.peripheral == null) {
-                tile.peripheral = new SerialChestPeripheral(tile);
+                tile.peripheral = new SerialChestPeripheral(tile, tile.getWorldObj());
             }
             return tile.peripheral;
         }

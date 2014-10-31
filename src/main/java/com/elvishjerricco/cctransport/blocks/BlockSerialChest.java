@@ -20,9 +20,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 public class BlockSerialChest extends BlockContainer {
-    IIcon top;
-    IIcon bottom;
-    IIcon sides;
+    public IIcon top;
+    public IIcon bottom;
+    public IIcon sides;
 
 
     public BlockSerialChest() {

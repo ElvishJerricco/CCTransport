@@ -6,6 +6,7 @@ import com.elvishjerricco.cctransport.peripheral.PeripheralProvider;
 import com.elvishjerricco.cctransport.peripheral.converter.ConversionFactory;
 import com.elvishjerricco.cctransport.peripheral.converter.ItemStackConverter;
 import com.elvishjerricco.cctransport.tiles.SerialChestTileEntity;
+import com.elvishjerricco.cctransport.turtle.SerialChestUpgrade;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -18,13 +19,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-@Mod(modid = CCTransport.MODID, version = CCTransport.VERSION, dependencies = "required-after:ComputerCraft")
-public class CCTransport
-{
+@Mod(modid = CCTransport.MODID, dependencies = "required-after:ComputerCraft")
+public class CCTransport {
     public static final String MODID = "CCTransport";
-    public static final String VERSION = "2.0";
 
-    public static final BlockSerialChest cerealChest = new BlockSerialChest();
+    public static final BlockSerialChest serialChest = new BlockSerialChest();
 
     @Mod.Instance
     public static CCTransport instance;
@@ -36,7 +35,7 @@ public class CCTransport
     public void init(FMLPreInitializationEvent event)
     {
         // Register
-        GameRegistry.registerBlock(cerealChest, "serialChest");
+        GameRegistry.registerBlock(serialChest, "serialChest");
         GameRegistry.registerTileEntity(SerialChestTileEntity.class, "serialChestTile");
 
         // Creative tab
@@ -47,13 +46,13 @@ public class CCTransport
                 break;
             }
         }
-        cerealChest.setCreativeTab(ccTab);
+        serialChest.setCreativeTab(ccTab);
 
         // Recipe
         Block cc_blockCable = GameRegistry.findBlock("ComputerCraft", "CC-Cable");
         ItemStack cc_modem = new ItemStack(cc_blockCable, 1, 1);
 
-        GameRegistry.addRecipe(new ItemStack(cerealChest, 1),
+        GameRegistry.addRecipe(new ItemStack(serialChest, 1),
                 " M ",
                 "MCM",
                 " M ",
@@ -63,6 +62,7 @@ public class CCTransport
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 
         ComputerCraftAPI.registerPeripheralProvider(new PeripheralProvider());
+        ComputerCraftAPI.registerTurtleUpgrade(new SerialChestUpgrade());
 
         ConversionFactory.registerConverter(new ItemStackConverter(), ItemStack.class);
     }
