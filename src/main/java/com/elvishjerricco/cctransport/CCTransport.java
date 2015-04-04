@@ -28,7 +28,7 @@ public class CCTransport {
     @Mod.Instance
     public static CCTransport instance;
 
-    @SidedProxy(clientSide = "com.elvishjerricco.cctransport.client.ClientProxy", serverSide = "com.elvishjerricco.cctransport.CommonProxy")
+    @SidedProxy(clientSide = "com.elvishjerricco.cctransport.client.ClientProxy", serverSide = "com.elvishjerricco.cctransport.common.CommonProxy")
     public static CommonProxy proxy;
 
     @EventHandler
