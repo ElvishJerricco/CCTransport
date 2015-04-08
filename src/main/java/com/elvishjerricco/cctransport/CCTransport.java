@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 
 @Mod(modid = CCTransport.MODID, dependencies = "required-after:ComputerCraft")
 public class CCTransport {
-    public static final String MODID = "CCTransport";
+    public static final String MODID = "cctransport";
 
     public static final BlockSerialChest serialChest = new BlockSerialChest();
 

@@ -1,6 +1,6 @@
 [
 {
-  "modid": "CCTransport",
+  "modid": "cctransport",
   "name": "CCTransport",
   "description": "Serialize items for CC.",
   "version": "${version}",

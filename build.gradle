@@ -25,12 +25,12 @@ version = { ->
     }
     return stdout.toString().trim()
 }()
-group= "com.ElvishJerricco.CCTransport" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "CCTransport"
+group= "com.elvishjerricco.cctransport" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "cctransport"
 
 minecraft {
     version = "1.7.10-10.13.2.1230"
-    assetDir = "eclipse/assets"
+    runDir = "eclipse"
 }
 
 dependencies {
@@ -67,4 +67,10 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+// Intellij bug
+// http://stackoverflow.com/questions/27623326/minecraft-forge-not-loading-textures
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
 }
