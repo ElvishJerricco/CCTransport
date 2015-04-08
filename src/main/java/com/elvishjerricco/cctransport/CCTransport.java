@@ -39,14 +39,17 @@ public class CCTransport {
         GameRegistry.registerTileEntity(SerialChestTileEntity.class, "serialChestTile");
 
         // Creative tab
-        CreativeTabs ccTab = null;
-        for (CreativeTabs tab : CreativeTabs.creativeTabArray) {
-            if (tab.getTabLabel().equals("ComputerCraft")) {
-                ccTab = tab;
-                break;
-            }
+        try {
+            Class cls = Class.forName("dan200.computercraft.ComputerCraft");
+            CreativeTabs ccTab = (CreativeTabs) cls.getField("mainCreativeTab").get(null);
+            CCTransport.serialChest.setCreativeTab(ccTab);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        serialChest.setCreativeTab(ccTab);
 
         // Recipe
         Block cc_blockCable = GameRegistry.findBlock("ComputerCraft", "CC-Cable");
