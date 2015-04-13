@@ -23,8 +23,8 @@ public class BlockSerialWorkbench extends Block {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         top = register.registerIcon("cctransport:serialWorkbenchTop");
-        bottom = register.registerIcon("cctransport:serialWorkbenchBottom");
-        sides = register.registerIcon("cctransport:serialWorkbenchSides");
+        bottom = register.registerIcon("cctransport:bottom");
+        sides = register.registerIcon("cctransport:sides");
     }
 
     @Override
