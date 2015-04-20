@@ -1,6 +1,7 @@
 package com.elvishjerricco.cctransport;
 
 import com.elvishjerricco.cctransport.blocks.BlockSerialChest;
+import com.elvishjerricco.cctransport.blocks.BlockSerialWorkbench;
 import com.elvishjerricco.cctransport.common.CommonProxy;
 import com.elvishjerricco.cctransport.peripheral.PeripheralProvider;
 import com.elvishjerricco.cctransport.peripheral.converter.ConversionFactory;
@@ -10,7 +11,7 @@ import com.elvishjerricco.cctransport.turtle.SerialChestUpgrade;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import dan200.computercraft.api.ComputerCraftAPI;
@@ -21,9 +22,10 @@ import net.minecraft.item.ItemStack;
 
 @Mod(modid = CCTransport.MODID, dependencies = "required-after:ComputerCraft")
 public class CCTransport {
-    public static final String MODID = "CCTransport";
+    public static final String MODID = "cctransport";
 
     public static final BlockSerialChest serialChest = new BlockSerialChest();
+    public static final BlockSerialWorkbench serialWorkbench = new BlockSerialWorkbench();
 
     @Mod.Instance
     public static CCTransport instance;
@@ -32,11 +34,13 @@ public class CCTransport {
     public static CommonProxy proxy;
 
     @EventHandler
-    public void init(FMLPreInitializationEvent event)
+    public void init(FMLInitializationEvent event)
     {
         // Register
         GameRegistry.registerBlock(serialChest, "serialChest");
         GameRegistry.registerTileEntity(SerialChestTileEntity.class, "serialChestTile");
+
+        GameRegistry.registerBlock(serialWorkbench, "serialWorkbench");
 
         // Creative tab
         try {
@@ -62,11 +66,21 @@ public class CCTransport {
                 'M', cc_modem, 'C', Blocks.chest
         );
 
+        GameRegistry.addRecipe(new ItemStack(serialWorkbench, 1),
+                " M ",
+                "MCM",
+                " M ",
+                'M', cc_modem, 'C', Blocks.crafting_table
+        );
+
+        // GUI
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 
+        // CC
         ComputerCraftAPI.registerPeripheralProvider(new PeripheralProvider());
         ComputerCraftAPI.registerTurtleUpgrade(new SerialChestUpgrade());
 
+        // CT
         ConversionFactory.registerConverter(new ItemStackConverter(), ItemStack.class);
     }
 }

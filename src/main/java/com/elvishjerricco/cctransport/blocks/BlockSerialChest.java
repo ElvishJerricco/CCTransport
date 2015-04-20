@@ -34,8 +34,8 @@ public class BlockSerialChest extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         top = register.registerIcon("cctransport:serialChestTop");
-        bottom = register.registerIcon("cctransport:serialChestBottom");
-        sides = register.registerIcon("cctransport:serialChestSides");
+        bottom = register.registerIcon("cctransport:bottom");
+        sides = register.registerIcon("cctransport:sides");
     }
 
     @Override
